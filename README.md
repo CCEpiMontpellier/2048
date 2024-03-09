@@ -45,10 +45,11 @@ Il existe de nombreuses autres fonctions dans la librairie p5.js. Vous pouvez le
 Posons les bases de notre jeu. Qu'est ce qu'un 2048 ? C'est un jeu ou il y a une grille de 4x4 cases. Chaque case contient un nombre et chaque nombre a une couleur. On peux donc créer les premières variables de notre jeu :
 
 ```js
-const SIZE = 4; // La taille de la grille
-const BLOCK_SIZE = 100; // La taille d'une case en pixel
-
-// Les couleurs des cases en fonction de leur valeur, ce sont des tableaux de 3 valeurs (R, G, B) entre 0 et 255
+// Les couleurs des cases en fonction de leur valeur
+// C'est un dictionnaire qui associe un nombre avec une couleur RVB (Rouge, Vert et Bleu), les trois couleurs
+// primaires utilisés par les ordinateurs pour produire n'importe quel couleur.
+// Allez sur https://t.ly/KHkGd et expérimentez avec les couleurs -- hésitez pas à changer les valeurs de ce
+// tableau pour rendre votre jeu unique !
 const BLOCK_COLORS = {
     0: [255, 255, 255],
     2: [255, 0, 0],
@@ -64,13 +65,19 @@ const BLOCK_COLORS = {
     2048: [255, 255, 0],
 }
 
-// La grille du jeu
+// La grille du jeu qui contiendra chaque petit bloc avec le nombre indiqué
+// On définit cette grille avec un DOUBLE tableau (c'est à dire une liste de liste)
+// Chaque bloc peut donc être localisé sur l'écran que vous allez faire avec des coordonnées X, Y.
 let blocks = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0]
 ];
+
+// Nous définitions ici des CONSTANTES, des variables qui ne changent pas de valeur.
+const SIZE = 4; // La taille de la grille, 4x4 blocs
+const BLOCK_SIZE = 100; // La taille d'une case en pixel
 ```
 
 # STEP 2: ON DESSINE
@@ -116,7 +123,20 @@ write_text(0, 0, "Hello World"); // Affiche "Hello World" en (0, 0)
 ```
 
 A vous de compléter la fonction draw() pour afficher les valeurs des cases de la grille.
-Vous devez normalement avoir la valeur des cases de la grille et la couleur correspondante. 
+Vous devez normalement avoir la valeur des cases de la grille et la couleur correspondante.
+
+Pour vous aider, imaginez que vous souhaitez parcourir chaque élément de votre double tableau `blocks`.
+Utilisez l'outil `for` pour vous aider. Voici un patron, à vous de l'adapter !
+
+```js
+for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+        // ...
+    }
+}
+```
+
+> Et comment on peut faire ça dans un autre sens ?
 
 # STEP 4: FAUT TOUT FAIRE BOUGER
 
