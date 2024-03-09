@@ -158,25 +158,81 @@ if (keyCode === LEFT_ARROW) {
     // La touche flèche gauche a été appuyée
 }
 ```
-Un conseil: faites une fonction `move_all` qui vas faire bouger toutes les cases dans une direction. Vous pourrez ensuite appeler cette fonction dans la fonction `keyPressed()`.
 
-Il faut aussi créer une fonction `add_block` qui va ajouter une case de valeur 2 ou 4 dans une case vide de la grille. Cette fonction ne prend pas de paramètre.
+Pour cette étape, il va vous falloir 3 fonctions :
+- une fonction `get_new_coordinates` qui va vous permettre d'obtenir la coordonnée du bloc après un déplacement spécifié. Voici le patron de cette fonction :
+  ```js
+  function get_new_coordinates(x, y, direction) {
+      // direction peut être up, down, left, ou right.
+      // Calculez la nouvelle position en x, y du bloc en additionnant ou en enlevant 1 à une des coordonnées, selon la direction
+      // Lorsque l'on va vers le haut par exemple, on enlève 1 à y.
+      // Lorsque l'on va vers la droite, on rajoute 1 à x.
+      // Réfléchissez à ce que vous devez faire pour aller vers le bas ou vers la gauche à partir de ces exemples !
+  }
+  ```
+- une fonction `move_block` qui va vous permettre de faire déplacer **un seul bloc** dans une direction donnée :
+  ```js
+  function move_block(x, y, direction) {
+      // Servez vous de `get_new_coordinates` pour avoir la prochaine position du bloc, en pensant à vérifier si l'espace où le bloc
+      // peut aller est vide.
+      // Par exemple, tant que le bloc en x = 3, y = 0 peut se déplacer vers la gauche (x = 2, y = 0 puis x = 1, y = 0...), on continue
+      // à appeler la fonction `get_new_coordinates` avec la coordonnée mise à jour.
+  }
+  ```
+  > Avez-vous pensé à vérifier si votre coordonnée va en dehors du tableau `blocks` ?
+- une fonction `move_all` qui va vous permettre de faire déplacer tous les blocs dans une direction, donc il faut un paramètre de direction :
+  ```js
+  function move_all(direction) {
+      // direction peut être up, down, left, ou right.
+      // Inspirez-vous de l'outil `for` dont on vous a parlé à l'étape 3, et appelez `move_block` pour chaque bloc de la grille jusqu'à
+      // que vous ayez parcouru l'ensemble des blocs de votre grille... s'il y en a.
+  }
+  ```
+  > Il faudrait peut-être avoir une boucle qui fonctionne à l'envers... en partant de `SIZE - 1` en `x` et en `y` !
+- une fonction `add_block` qui va ajouter une case de valeur 2 ou 4 dans une case vide de la grille. Cette fonction ne prend pas de paramètre :
+  ```js
+  function add_block() {
+      let random_y = Math.floor(Math.random() * SIZE);
+      let random_x = Math.floor(Math.random() * SIZE);
+      let random_value = Math.random() < 0.5 ? 2 : 4;
+
+      while (blocks[random_y][random_x] !== 0) {
+          random_y = Math.floor(Math.random() * SIZE);
+          random_x = Math.floor(Math.random() * SIZE);
+      }
+  }
+  ```
+  **Conseil d'ami** : Sauvegardez maintenant votre travail.
+  
+  > Que se passe-t'il si votre grille est pleine ? Vous ne pouvez plus rien faire ? C'est peut-être normal... Il manque une condition au `while`.
+  > Pour vous aider, faites une fonction qui vérifie si la grille est déjà remplie de blocs :
+  > ```js
+  > function is_grid_full() {
+  >     // si la grille est pleine, on peut
+  >     return true; // dire que c'est vrai
+  >     // sinon
+  >     return false; // dire que c'est faux
+  > 
+  >     // Il va falloir que vous parcourez la grille... encore !!!
+  >     // Pour chaque coordonnée, tant que vous parcourez la liste et que vous n'êtes pas tombé sur une case vide, vous continuez...
+  >     // SI (if) vous tombez sur une case vide, alors il faut dire que c'est faux, car il y a au moins une case qui est à 0.
+  >     // Lorsque vous RETOURNEZ (return) dans une boucle, le reste du code ne s'exécutera pas.
+  >     for (...)  {
+  >         for (...) {
+  >             if (...) {
+  >
+  >             }
+  >         }
+  >     }
+  >     // Si vous atteignez cette partie, c'est que votre boucle s'est exécutée jusqu'au bout. À vous maintenat de savoir quoi
+  >     // retourner ici ! :]
+  > }
 Voici un code qui peux vous aider :
-
-```js
-let random_y = Math.floor(Math.random() * SIZE);
-let random_x = Math.floor(Math.random() * SIZE);
-let random_value = Math.random() < 0.5 ? 2 : 4;
-
-while (blocks[random_y][random_x] !== 0) {
-    random_y = Math.floor(Math.random() * SIZE);
-    random_x = Math.floor(Math.random() * SIZE);
-}
-```
 
 # STEP 5: LES FUSIONS
 
-Maintenant que les cases bougent, il faut qu'elles fusionnent. Je vais rien dire et vous laisse faire. Bon courage.
+Maintenant que les cases bougent, il faut qu'elles fusionnent. Modifiez la fonction `move_all` pour qu'il gère ce genre de cas.
+Pensez à vérifier si deux cases adjacentes sont **identiques**.
 
 # STEP 6: LE JEU EST FINI
 
